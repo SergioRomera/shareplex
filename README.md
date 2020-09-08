@@ -33,8 +33,8 @@ Or download the quest-master.zip file in a directory and unzip.
 
 [Oracle to Oracle](https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21)
 
-![Oracle to Oracle](oracle-to-oracle.png)
-[![IMAGE ALT TEXT HERE](oracle-to-oracle.png)](https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21)
+![Oracle to Oracle](oracle-to-oracle.png){:target="_blank" rel="noopener"}
+[![IMAGE ALT TEXT HERE](oracle-to-oracle.png)](https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21){:target="_blank" rel="noopener"}
 
 
   
