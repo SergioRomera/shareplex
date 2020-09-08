@@ -29,9 +29,9 @@ Or download the quest-master.zip file in a directory and unzip.
 
 ## Architecture
 
-![oracle-to-sqlserver.png](oracle-to-oracle.png)
+[Oracle to Oracle](https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21)
 
-![Oracle to Oracle(<iframe width="700" height="400" style="border:none;"src="https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21"></iframe>)](oracle-to-oracle.png)
+[![Oracle to Oracle](oracle-to-oracle.png)](https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21)
 
 # Licenses
 Shareplex and Foglight require licenses. This step is mandatory. Put your licenses in this files:
