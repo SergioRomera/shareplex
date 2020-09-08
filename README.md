@@ -31,12 +31,14 @@ Or download the quest-master.zip file in a directory and unzip.
 
 ## Architectures
 
+[Oracle to Oracle](https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21)
+![Oracle to Oracle](oracle-to-oracle.png)
 
-![Oracle to Oracle(https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21)](oracle-to-oracle.png)
 
-![Oracle to Oracle(<iframe width="700" height="400" style="border:none;"src="https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21"></iframe>)](oracle-to-oracle.png)
+[Oracle to SQL Server](https://arcentry.com/app/embed.html?id=d49e0999-c6a2-4d6e-a0eb-8a3363dc6172)
+![Oracle to SQL Server](oracle-to-sqlserver.png)
 
-![Oracle to SQL Server(<iframe width="700" height="400" style="border:none;"src="https://arcentry.com/app/embed.html?id=d49e0999-c6a2-4d6e-a0eb-8a3363dc6172"></iframe>)](oracle-to-sqlserver.png)
 
-![Oracle to Kafka(<iframe width="700" height="400" style="border:none;"src="https://arcentry.com/app/embed.html?id=04e162c7-2263-47a7-aa0c-42dfc0d139ac"></iframe>)](oracle-to-kafka.png)
+[Oracle to Kafka](https://arcentry.com/app/embed.html?id=04e162c7-2263-47a7-aa0c-42dfc0d139ac)
+![Oracle to Kafka](oracle-to-kafka.png)
 
