@@ -112,12 +112,12 @@ fglam=`./fglcmd.sh -cmd agent:list | grep "Host:" | tail -1 | awk '{ print $2 }'
             fglam_name ${fglam} \
             instances_file_name $FOGLIGHT_CARTRIDGES/DB_Oracle_CLI_Installer/oracle_cli_installer_input_template.csv
 #MSSQL
-fglam=`./fglcmd.sh -cmd agent:list | grep "Host:" | tail -1 | awk '{ print $2 }'`
-./fglcmd.sh -srv 127.0.0.1 \
-            -port 8080 \
-            -usr foglight \
-            -pwd foglight \
-            -cmd script:run \
-            -f $FOGLIGHT_CARTRIDGES/DB_SQL_Server_CLI_Installer/mssql_cli_installer.groovy \
-            fglam_name ${fglam} \
-            instances_file_name $FOGLIGHT_CARTRIDGES/DB_SQL_Server_CLI_Installer/silent_installer_input_template.csv
+# fglam=`./fglcmd.sh -cmd agent:list | grep "Host:" | tail -1 | awk '{ print $2 }'`
+# ./fglcmd.sh -srv 127.0.0.1 \
+            # -port 8080 \
+            # -usr foglight \
+            # -pwd foglight \
+            # -cmd script:run \
+            # -f $FOGLIGHT_CARTRIDGES/DB_SQL_Server_CLI_Installer/mssql_cli_installer.groovy \
+            # fglam_name ${fglam} \
+            # instances_file_name $FOGLIGHT_CARTRIDGES/DB_SQL_Server_CLI_Installer/silent_installer_input_template.csv
