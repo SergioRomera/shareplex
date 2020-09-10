@@ -96,7 +96,7 @@ vagrant destroy -f
 
 # Shareplex configuration
 
-**Node 1**
+**Virtual Machine 1**
 ```
 Machine name: ol7-121-splex1
 Machine port: 2201
@@ -121,7 +121,7 @@ spc                      -> SharePlex console
   show config            -> Show SharePlex config
 ```
 
-**Node 2**
+**Virtual Machine 2**
 ```
 Machine name: ol7-kafka
 Machine port: 2202

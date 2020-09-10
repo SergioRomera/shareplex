@@ -2,6 +2,8 @@
 
 sh /vagrant_scripts/prepare_u01_disk.sh
 
+export MACHINE_HOSTNAME=$NODE2_HOSTNAME
+
 sh /vagrant_scripts/configure_hostname.sh
 
 sh /vagrant_scripts/install_os_packages.sh
