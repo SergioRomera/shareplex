@@ -1,0 +1,17 @@
+shared:
+  box: bento/oracle-7.5
+  non_rotational: 'on'
+
+node1:
+  vm_name: ol7_121_splex1
+  mem_size: 4096
+  cpus: 2
+  public_ip: 192.168.56.101
+  u01_disk: /temp/vdi/ol7_121_cplex1_u01.vdi
+
+node2:
+  vm_name: ol7_kafka
+  mem_size: 2048
+  cpus: 2
+  public_ip: 192.168.56.102
+  u01_disk: /temp/vdi/ol7_kafka_u01.vdi
