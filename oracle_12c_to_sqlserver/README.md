@@ -20,12 +20,12 @@ Download and install the following software.
 Pick an area on your file system to act as the base for this git repository and issue the following command. If you are working on Windows remember to check your Git settings for line terminators. If the bash scripts are converted to Windows terminators you will have problems.
 
 ```
-git clone https://github.com/SergioRomera/quest.git
+git clone https://github.com/SergioRomera/shareplex.git
 ```
 
 Copy the software under the "quest" directory.
 
-Or download the quest-master.zip file in a directory and unzip.
+Or download the shareplex-master.zip file in a directory and unzip.
 
 
 ## Architecture
@@ -95,13 +95,16 @@ vagrant destroy -f
 
 # Shareplex configuration
 
-**Node 1**
+**Virtual Machine 1**
 ```
+Machine name: ol7-121-splex1
+Machine port: 2201
+
 Database name: pdb1
 Oracle user: hr
 Oracle password: hr
 
-Connection string: 
+Database connection string: 
 
 sqlplus hr/hr@pdb1
 
@@ -114,13 +117,16 @@ spc                      -> SharePlex console
   show config            -> Show SharePlex config
 ```
 
-**Node 5**
+**Virtual Machine 5**
 ```
+Machine name: ol7-121-mssql
+Machine port: 2205
+
 Database name: test
 SQL Server user: SA
 SQL Server password: SQLServer1
 
-Connection string: 
+Database connection string: 
 
 /opt/mssql-tools/bin/sqlcmd -D -Stest -USA -PSQLServer01
 ```
