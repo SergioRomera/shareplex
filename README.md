@@ -26,7 +26,7 @@ git clone https://github.com/SergioRomera/shareplex.git
 
 Copy the software under the "quest" directory.
 
-Or download the quest-master.zip file in a directory and unzip.
+Or download the shareplex-master.zip file in a directory and unzip.
 
 
 ## Architectures
