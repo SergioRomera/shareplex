@@ -46,6 +46,6 @@ Or download the shareplex-master.zip file in a directory and unzip.
 
 [![Oracle to Kafka](oracle-to-kafka.png)](https://arcentry.com/app/embed.html?id=04e162c7-2263-47a7-aa0c-42dfc0d139ac)
 
-[Oracle to Oracle with Foglight]()
+Oracle to Oracle with Foglight
 
 [![Oracle to Oracle with Foglight](oracle-to-oracle-foglight.png)]()
