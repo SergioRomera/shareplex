@@ -48,4 +48,4 @@ Or download the shareplex-master.zip file in a directory and unzip.
 
 Oracle to Oracle with Foglight
 
-[![Oracle to Oracle with Foglight](oracle-to-oracle-foglight.png)]()
+![Oracle to Oracle with Foglight](oracle-to-oracle-foglight.png)
