@@ -34,12 +34,22 @@ Or download the shareplex-master.zip file in a directory and unzip.
 # Licenses
 Shareplex and Foglight require licenses. This step is mandatory. Put your licenses in this files:
 
-* Shareplex license
+## Shareplex license
 
 ```
 └───software
         shareplex_customer_name.txt
         shareplex_licence_key.txt
+```
+## Foglight license
+
+Put your *.license files in this directory. You can obtain your licences from [licenses](https://support.quest.com).
+
+```
+└───software
+    ├───foglight
+    │   ├───foglight_licenses
+    │   │   │   put_foglight_licenses_here.txt
 ```
 
 # Build the Shareplex System
@@ -151,6 +161,8 @@ spc                      -> SharePlex console
   list config            -> List SharePlex config files
   show config            -> Show SharePlex config
 ```
+
+# Foglight configuration
 
 **Virtual Machine 4**
 ```
