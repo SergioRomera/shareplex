@@ -29,9 +29,9 @@ Or download the shareplex-master.zip file in a directory and unzip.
 
 ## Architecture
 
-[Oracle to Oracle](https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21)
+[Oracle to Oracle](https://arcentry.com/app/embed.html?id=d3cafd55-f92c-4105-88be-7cb40b5e914f)
 
-[![Oracle to Oracle](oracle-to-oracle.png)](https://arcentry.com/app/embed.html?id=c990c073-db50-4560-84fe-813ebbe44f21)
+[![Oracle to Oracle](oracle-to-oracle.png)](https://arcentry.com/app/embed.html?id=d3cafd55-f92c-4105-88be-7cb40b5e914f)
 
 # Licenses
 Shareplex and Foglight require licenses. This step is mandatory. Put your licenses in this files:
