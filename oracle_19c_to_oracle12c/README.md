@@ -34,7 +34,7 @@ Or download the shareplex-master.zip file in a directory and unzip.
 tree
 +--- software
 |   +--- LINUX.X64_193000_db_home.zip
-|   +--- put_software_here.tx
+|   +--- put_software_here.txt
 ```
 
 ## Architecture
