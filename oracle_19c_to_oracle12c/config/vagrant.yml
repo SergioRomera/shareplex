@@ -1,0 +1,17 @@
+shared:
+  box: oraclebase/oracle-8
+  non_rotational: 'on'
+
+node1:
+  vm_name: ol8_19_splex1
+  mem_size: 4096
+  cpus: 2
+  public_ip: 192.168.56.101
+  u01_disk: /temp/vdi/ol8_19_splex1_u01.vdi
+
+node2:
+  vm_name: ol8_19_splex2
+  mem_size: 4096
+  cpus: 2
+  public_ip: 192.168.56.102
+  u01_disk: /temp/vdi/ol8_19_splex2_u01.vdi
