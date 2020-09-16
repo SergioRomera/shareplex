@@ -1,54 +1,12 @@
 --#####################################################################################################################################
 --
--- Script Name:        	Cust_DBInfo_v94.sql
--- Create Date:         	January 2001
--- Last Update:        	May 2020
--- Current Version:     	9.4
--- Author:              	Quest Software.
--- Copyright:			2001,2020 Quest Software Inc,
--- All rights reserved 
--- May not be copied or distributed without written permission from Quest Software
+-- Script Name:        	Cust_DBInfo_v83.sql
+-- Create Date:         January 2001
+-- Last Update:         August 2017
+-- Current Version:     8.3
+-- Author:              Quest Software, Inc.
 --
--- SCRIPT MAINTENCE:    THIS SCRIPT IS OWNED AND MAINTAINED BY SHAREPLEX NAM SE TEAM
-
--- Revision:                   9.4
--- When:                       2020/05/05
--- Who:			       Clay Jackson, Mike Shurtz
--- What:                     1. Changed version to correspond to latest version of SharePlex
---			     2. Added version prompt
---			     3. Deleted timing reports throughout
---		             4. Cleaned up headings
---			     5. Added test for database/table forcelogging 
---			     6. Added check for PDBs 
---                           7. Added check for materialized views
---                           8. Added CPU count
---                           9. Display exclusion list
---                           10.Clean up and add to exclusion list
---                           11.Changed report date to US format
---                           12.Moved database parameters to end of report
---			     13.Added copyright and no distribution statements
-
--- Revision:                   9.22
--- When:                       2020/04/24
--- Who:			       Mike Shurtz
--- What:                     1. Added check for flashback on or off
--- Revision:                   9.21
--- When:                       2019/03/27
--- Who:			       Clay Jackson
--- What:                     1. Deleted non-Oracle Targets
--- Revision:                   9.20
--- When:                       2018/11/14
--- Who:			       Clay Jackson
--- What:                     1. Added Supported Data Types in SharePlex 9.2 for SQLServer
---_Revision:                   9.1.3	
--- When:                       2018/03/05
--- Who:			       Clay Jackson
--- What:                     1. Added Supported Data Types in SharePlex 9.1.3 for SQLServer
---					   2. Changed version to confirm with SharePlex version
--- Revision:                   8.4	
--- When:                       2018/03/05
--- Who:			       Clay Jackson
--- What:                      	   1. Replaced references to Dell
+-- SCRIPT MAINTENCE:    THIS SCRIPT IS OWNED AND MAINTAINED BY SHAREPLEX PRODUCT MANAGEMENT / DEVELOPMENT
 -- Revision:                   8.3	
 -- When:                       2017/08/23
 -- Who:			       Clay Jackson
@@ -156,13 +114,10 @@ set verify off;
 set linesize 300;
 set pagesize 1000;
 set trimspool on
-
-define user_exclusion="('SYS', 'SYSTEM', 'XS$NULL', 'OJVMSYS', 'LBACSYS', 'OUTLN', 'SYS$UMF', 'DBSNMP', 'APPQOSSYS', 'DBSFWUSER', 'GGSYS', 'ANONYMOUS', 'CTXSYS', 'DVF', 'DVSYS', 'GSMADMIN_INTERNAL', 'MDSYS', 'OLAPSYS', 'XDB', 'WMSYS')"
-define user_exclusion1= "('GSMCATUSER', 'MDDATA', 'REMOTE_SCHEDULER_AGENT', 'SYSBACKUP', 'GSMUSER', 'GSMROOTUSER', 'SYSRAC', 'SI_INFORMTN_SCHEMA', 'AUDSYS', 'DIP', 'ORDPLUGINS', 'ORDDATA', 'SYSKM', 'ORACLE_OCM', 'ORDSYS', 'SYSDG', 'SPLEX' )"
-define user_exclusion2= "('EXFSYS','FLOWS_FILES','SYSMAN','OWB','OWBSYS','SCOTT','OWBSYS_AUDIT')"
-
+define user_exclusion="('SYS','SYSTEM','MDSYS','ORDSYS','EXFSYS','DMSYS','WMSYS','CTXSYS','SYSMAN','OLAPSYS','DBSNMP','TSMSYS','SCOTT','OUTLN','RMAN','XDB','PERFSTAT','SPLEX')"
 column chain_cnt format 999G999G999G999
 column num_rows format 999G999G999G999
+timing start 'Total Duration';
 set heading off;
 
 COLUMN defdbname NEW_VAL dbname
@@ -179,10 +134,6 @@ COLUMN defplatform NEW_VAL platform
 COLUMN defcharset NEW_VAL charset
 COLUMN defncharset NEW_VAL ncharset
 COLUMN defrac NEW_VAL rac
-COLUMN defprogver NEW_VAL progver
-COLUMN defapexuser NEW_VAL apexuser
-
-select '9.4.0' AS defprogver from dual;
 
 SELECT name AS defdbname,
        TO_CHAR(created,'DD.MM.YYYY HH24:MI:SS') AS defcreated,
@@ -204,7 +155,7 @@ SELECT value AS defcompatible
 FROM   v$parameter
 WHERE  name = 'compatible';
 
-SELECT TO_CHAR(SYSDATE,'MM.DD.YYYY HH24:MI:SS') AS defsysdate 
+SELECT TO_CHAR(SYSDATE,'DD.MM.YYYY HH24:MI:SS') AS defsysdate 
 FROM   dual;
 
 SELECT host_name AS defhostname 
@@ -228,83 +179,36 @@ WHERE  name = 'cluster_database';
 spool &dbname..lst
 
 PROMPT *********************************************************************
-PROMPT ****	Customer DB Info                        : &progver     
-PROMPT **** Report Date                             : &sysdatum
-PROMPT ****	Report for Database                     : &dbname
-PROMPT ****	User                                    : &dbuser
-PROMPT ****	Software Version                        : &version	
-PROMPT ****	Effective Version (compatible parameter): &compatible	
-PROMPT ****	Banner                                  : &banner	
-PROMPT ****	Platform name                           : &platform	
-PROMPT ****	Server name                             : &host		
-PROMPT ****	Database logging mode                   : &log_mode 
-PROMPT ****	Database creation date                  : &crdate	
-PROMPT ****	Instance startup time                   : &inststartup	
-PROMPT ****	Database characterset                   : &charset	
-PROMPT ****	Database national characterset          : &ncharset
-PROMPT ****	RAC                                     : &rac	
-PROMPT ****     COPYRIGHT 2001,2020 Quest Software Inc
-PROMPT ****     MAY NOT BE COPIED OR DISTRIBUTED WITHOUT WRITTEN
-PROMPT ****     PERMISSION FROM QUEST SOFTWARE
+PROMPT **** 	Report Date                             : &sysdatum	****
+PROMPT ****	Report for Database                     : &dbname	****
+PROMPT ****	User                                    : &dbuser	****
+PROMPT ****	Software Version                        : &version	****
+PROMPT ****	Effective Version (compatible parameter): &compatible	****
+PROMPT ****	Banner                                  : &banner	****
+PROMPT ****	Platform name                           : &platform	****
+PROMPT ****	Server name                             : &host		****
+PROMPT ****	Database logging mode                   : &log_mode 	****
+PROMPT ****	Database creation date                  : &crdate	****
+PROMPT ****	Instance startup time                   : &inststartup	****
+PROMPT ****	Database characterset                   : &charset	****
+PROMPT ****	Database national characterset          : &ncharset	****
+PROMPT ****	RAC (9.0.1 +)                           : &rac		****
 PROMPT *********************************************************************
 PROMPT
-PROMPT *********************************************************************
-PROMPT ***      PURPOSE - Ths script scans databases being replicated by
-PROMPT ***      SharePlex and reports on data types, redo log usage and other
-PROMPT ***      database attributes to assist Quest and the customer in 
-PROMPT ***      configuring SharePlex
-PROMPT ***
-PROMPT ***      NOTE - Version 9.4 of SharePlex supports Oracle        
-PROMPT ***      version 11.2.0.4 and later ONLY.  For earlier versions  
-PROMPT ***      of Oracle, please contact your Account Manager BEFORE 
-PROMPT ***      proceeding.                                             
-PROMPT *********************************************************************
-PROMPT ***
-PROMPT ***      The script does not examine the following Oracle and
-PROMPT ***      SharePlex owned schemas, as they are typically not
-PROMPT ***      candidates for replication.   Pleae contact your Account Manager
-PROMPT ***      BEFORE attempting to replicate any tables except the 
-PROMPT ***      SPLEX.DEMO tables, in these schemas.
-PROMPT *** 
-PROMPT ***  : &user_exclusion
-PROMPT ***  : &user_exclusion1
-PROMPT ***  : &user_exclusion2
-PROMPT ***
-PROMPT **********************************************************************
+PROMPT
 
-set heading off;
-set feedback off;
+set heading on;
+timing start 'SuppLog';
 
-PROMPT 
-PROMPT *********************************************************************
-PROMPT ****     Check for APEX schema
-PROMPT ****     APEX schema typically contains data types that are not
-PROMPT ****     Supported by SharePlex - please contact Account Manager BEFORE
-PROMPT ****     attempting to replicate objects in this schema
-PROMPT *********************************************************************
-set serveroutput on 
-DECLARE 
-	apexusers integer;
-BEGIN
-	select count(*) into apexusers from dba_users 
-	    where username like 'APEX%';
-        IF apexusers > 0 THEN
-            dbms_output.put_line ('APEX Schema is present');
-	ELSE
-            dbms_output.put_line ('APEX Schema is NOT present');
-	END IF;
-END;
-/
-set serveroutput off
 PROMPT
 PROMPT
 PROMPT *********************************************************************
-PROMPT **** 	Check for supplemental logging                     	
-PROMPT **** 	MUST be at least MIN level                              
-PROMPT **** 	PK/UI STRONGLY recommended to provide best performance  
+PROMPT **** 	Check for supplemental logging                     	****
+PROMPT **** 	(for Oracle 9/10: should be at least MIN level;    	****
+PROMPT **** 	for SP6.0 and higher: PK/UI level is even better;  	****
+PROMPT **** 	for Oracle 8i: not applicable)                     	****
 PROMPT *********************************************************************
-SET heading off;
-SET feedback off;
+SET HEADING OFF
 
 SET SERVEROUTPUT ON
 DECLARE
@@ -374,129 +278,59 @@ BEGIN
 END;
 /
 
-PROMPT
-PROMPT
-PROMPT *********************************************************************
-PROMPT **** 	Check for Flashback Database ON or OFF               	
-PROMPT ****     Flashback NOT supported on source database
-PROMPT ****								
-PROMPT **** 	FLASHBACK ON on target will impact performance         
-PROMPT **** 							  	
-PROMPT *********************************************************************
-set heading off 
-set feedback off
-select 'Flashback Enabled -> ' || flashback_on from v$database;
-
-PROMPT
-PROMPT
-PROMPT *********************************************************************
-PROMPT **** 	Check for PDB databases               	
-PROMPT **** 							  	
-PROMPT *********************************************************************
-set serveroutput on
-set heading off
-set feedback off
-declare
- vid	varchar2(15);
-begin
- select substr(version, 1, 4) INTO vid from v$instance;
-  if vid = '11.2' then 
-  dbms_output.put_line ('this version is 11g, there should be no PDBs and next line will show an error');
- else
-  dbms_output.put_line ('Status of the PDB where this program was executed. If more than one is listed check if script was run in the container' );
-  dbms_output.put_line ('If this was run in the container, please ALSO run this script in each pluggable database that will be a replication source' );
-end if;
-end;
-/
-set heading on
-set lines 300
-col name format a20
-select con_id, name, open_mode from v$pdbs;
-
-set heading off;
-prompt
-prompt
 prompt *********************************************************************
-prompt ****	PARALLELISM Settings                			
-prompt ****	SharePlex does not support PARALLELISM           		
+prompt ****	Database Parameter Settings         			****
+prompt ****	Looking for things out of the norm or        		****
+prompt ****	inconsistent for a healthy database          		****
 prompt *********************************************************************
-select decode(value,1,'LOG PARALLELISM NOT SET','LOG PARALLELISM IS NOT 1') from v$parameter where name = 'log_parallelism';
-select decode(value,0,'RECOVERY PARALLELISM NOT SET','RECOVERY PARALLELISM IS NOT 0') from v$parameter where name = 'recovery_parallelism';
-
-
-prompt
-prompt
-PROMPT *********************************************************************
-PROMPT ****	NOLOGGING Check - Tables being replicated MUST be logged
-PROMPT ****     CAUTION - if database or tablespace level logging is set
-PROMPT ****     and subsequently turned off, be sure to check tables with
-PROMPT ****     NOLOGGING
-PROMPT *********************************************************************
-column force_logging format A15
-set heading off;
-set feedback off;
-
-PROMPT
-PROMPT
-PROMPT *********************************************************************
-PROMPT *** Database level force logging
-PROMPT *********************************************************************
-select 'Database level force logging = ', force_logging from v$database;
-
-PROMPT
-PROMPT
-PROMPT *********************************************************************
-PROMPT *** Tablespace level force logging
-PROMPT *********************************************************************
 set heading on;
-column tablespace_name format a50
-select tablespace_name, force_logging from dba_tablespaces;
+col Parameter for a35;
+col Setting for a50;
+select substr(name,1,35) as "Parameter", substr(value,1,50) as "Setting" from v$parameter order by name;
+timing stop Params;
+timing stop 'Total Duration';
 
-PROMPT
-PROMPT
-PROMPT ********************************************************************
-PROMPT **** 	Tables with NOLOGGING attribute set                 	
-PROMPT ****	These may be ignored if force logging is set                  
-PROMPT ****	at either tablespace or database level              	
-PROMPT ****	or if tables are not replicated                         
+set heading off;
+prompt *********************************************************************
+prompt ****	PARALLELISM Settings                			****
+prompt ****	SPLEX does not support PARALLELISM           		****
+prompt *********************************************************************
+timing start Params;
+select decode(value,1,'LOG PARALLELISM OK','LOG PARALLELISM IS NOT 1') from v$parameter where name = 'log_parallelism';
+select decode(value,0,'RECOVERY PARALLELISM OK','RECOVERY PARALLELISM IS NOT 0') from v$parameter where name = 'recovery_parallelism';
+
+
+PROMPT *********************************************************************
+PROMPT **** 	Tables with NOLOGGING attribute set                 	****
+PROMPT ****	(please doublecheck if FORCELOGGING is set          	****
+PROMPT ****	at either tablespace or database level              	****
+PROMPT ****	and whether these tables should be replicated at all	****
 PROMPT *********************************************************************
 
 COLUMN table_name FORMAT A30
-set feedback on;
+
 SELECT owner, table_name, NULL AS partition_name, NULL AS subpartition_name 
 FROM   dba_tables 
 WHERE  logging = 'NO' AND temporary = 'N'
 AND    owner NOT IN &user_exclusion
-AND    owner NOT IN &user_exclusion
-AND    owner NOT IN &user_exclusion1
-AND    owner NOT LIKE 'APEX%'
 UNION
 SELECT table_owner AS owner, table_name, partition_name, NULL AS subpartition_name 
 FROM   dba_tab_partitions
 WHERE  logging = 'NO'
 AND    table_owner NOT IN &user_exclusion
-AND    table_owner NOT IN &user_exclusion1
-AND    table_owner NOT IN &user_exclusion2
-AND    table_owner NOT LIKE 'APEX%'
 UNION
 SELECT table_owner AS owner, table_name, partition_name, subpartition_name 
 FROM   dba_tab_subpartitions
 WHERE  logging = 'NO'
-AND    table_owner NOT LIKE 'APEX%'
-AND    table_owner NOT IN &user_exclusion
-AND    table_owner NOT IN &user_exclusion1
-AND    table_owner NOT IN &user_exclusion2;
-
-set feedback off;
+AND    table_owner NOT IN &user_exclusion;
+timing stop 'SuppLog';
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****	List of Objects by Schema Owner        			
-prompt ****     Primarily for informational purposes   			
+prompt ****	List of Objects by Schema Owner        			****
+prompt ****     Primarily for informational purposes   			****
 prompt *********************************************************************
+timing start 'Schema Obj';
 set heading on;
 col username for a30
 col Tabs  format 999999
@@ -537,21 +371,17 @@ from     sys.obj$ o, dba_users u
 where    u.USER_ID = o.OWNER# (+)
 and      o.TYPE# is NOT NULL
 and      u.username not in &user_exclusion
-AND      u.username NOT IN &user_exclusion1
-AND      u.username NOT IN &user_exclusion2
-AND      u.username NOT LIKE 'APEX%'
 group by USERNAME
 order by USERNAME;
 clear breaks;
+timing stop 'Schema Obj';
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****	Tablespace Info                 			
-prompt ****	mostly informational                         		
+prompt ****	Tablespace Info                 			****
+prompt ****	mostly informational                         		****
 prompt *********************************************************************
+timing start 'Tablespace Info';
 
 set heading on;
 break on report
@@ -579,10 +409,8 @@ d.tablespace_name,d.file_name;
 
 clear breaks
 
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt **** 	Database size Info              			
+prompt **** 	Database size Info              			****
 prompt *********************************************************************
 
 
@@ -605,27 +433,26 @@ from v$log) used
 from dba_free_space) free
 group by free.p;
 
+timing stop 'Tablespace Info';
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt **** 	Redo Log Files and Sizing          			
+prompt **** 	Redo Log Files and Sizing          			****
 prompt *********************************************************************
+timing start 'Redo Sizing';
 
 set heading on;
 col "File Name" for a80;
 col "Size in MB" format 999G999G999G999G990
 select substr(a.member,1,80) as "File Name",b.bytes/1024/1024 as "Size in MB" 
 from v$logfile a,v$log b where a.group#=b.group#;
+timing stop 'Redo Sizing';
 
 set heading off;
-prompt
-prompt
 prompt *********************************************************************
-prompt ****     Redolog Switch Rate by Date and Hour     		
+prompt ****     Redolog Switch Rate by Date and Hour     		****
 prompt *********************************************************************
+timing start 'Redo Switch Rate';
 
 set heading on;
 column day format a3
@@ -716,14 +543,14 @@ group by trunc(first_time), to_char(first_time, 'Dy')
 Order by 1;
 
 clear breaks
+timing stop 'Redo Switch Rate';
 
 set heading off;
-prompt
-prompt
 prompt *********************************************************************
-prompt ****  	Redolog Daily and Hourly volume calculated  		
+prompt ****  	Redolog Daily and Hourly volume calculated  		****
 prompt *********************************************************************
 
+timing start Redovol;
 
 --##########################################################################
 --##  PL/SQL used here to gather and display average redo volumes         ##
@@ -768,121 +595,117 @@ end;
 
 /
 
+timing stop Redovol;
 set heading off;
-
-PROMPT
-PROMPT
 PROMPT *********************************************************************
-PROMPT ****  The above is to help you compute the amount of disk space	
-PROMPT ****  needed for the SharePlex queues. Use the below formula.   
-PROMPT ****                                                             
-PROMPT ****  [size of a redo log] x [# of log switches in 1 hour]       
-PROMPT ****  x 1/3  x [number of hours downtime]                        
-PROMPT ****  = amount of disk space needed for the queues on each system
-PROMPT ****                                                             
-PROMPT ****  For example,                                               
-PROMPT ****  if you expect to recover from 8 hours of downtime,         
-PROMPT ****  and your redo logs are 500 MB in size                      
-PROMPT ****  and switch five times an hour,                             
-PROMPT ****  then you could need 6.5 GB of                              
-PROMPT ****  space on both the source and target machines               
-PROMPT ****  for the SharePlex queues.                                  
-PROMPT ****  [500 MB redo log] x [5 switches/hour] x [1/3] x [8 hours]  
-PROMPT ****  = 6.5 GB disk space                                        
+PROMPT ****  The above is to help you compute the amount of disk space	****
+PROMPT ****  needed for the SharePlex queues. Use the below formula.    ****
+PROMPT ****                                                             ****
+PROMPT ****  [size of a redo log] x [# of log switches in 1 hour]       ****
+PROMPT ****  x 1/3  x [number of hours downtime]                        ****
+PROMPT ****  = amount of disk space needed for the queues on each system****
+PROMPT ****                                                             ****
+PROMPT ****  For example,                                               ****
+PROMPT ****  if you expect to recover from 8 hours of downtime,         ****
+PROMPT ****  and your redo logs are 500 MB in size                      ****
+PROMPT ****  and switch five times an hour,                             ****
+PROMPT ****  then you could need 6.5 GB of                              ****
+PROMPT ****  space on both the source and target machines               ****
+PROMPT ****  for the SharePlex queues.                                  ****
+PROMPT ****  [500 MB redo log] x [5 switches/hour] x [1/3] x [8 hours]  ****
+PROMPT ****  = 6.5 GB disk space                                        ****
 PROMPT *********************************************************************
 PROMPT
 PROMPT
 PROMPT
+PROMPT
+PROMPT
 PROMPT *********************************************************************
-PROMPT ****	CLUSTERED TABLES                                    	
-PROMPT **** 	NOT SUPPORTED                                       	
+PROMPT ****	CLUSTERED TABLES                                    	****
+PROMPT **** 	NOT SUPPORTED                                       	****
 PROMPT *********************************************************************
-column cluster_name format a30
+timing start Cluster;
 set heading on;
-set feedback on;
-SELECT owner, cluster_name
+SELECT owner, cluster_name, cluster_type, single_table
 FROM   dba_clusters
 WHERE  owner NOT IN &user_exclusion
-AND  owner NOT IN &user_exclusion1
-AND  owner NOT IN &user_exclusion2
-AND  owner NOT LIKE 'APEX%'
 ORDER BY owner, cluster_name;
+timing stop Cluster;
 
 set heading off;
 PROMPT
 PROMPT
 PROMPT *********************************************************************	
-PROMPT **** 	Tablespaces with Transparent Data Encryption        	
-PROMPT ****	Note - replication of tables using TDE requires configuration 
-PROMPT ***      in ora_setup and access to the Oracle Wallet
+PROMPT **** 	Tablespaces with Transparent Data Encryption        	****
+PROMPT ****	Prior to SP 8.0: NOT SUPPORTED                      	**** 
 PROMPT *********************************************************************
+timing start TS_TDE;
 set heading on;
 
 SELECT t.name
 FROM   v$encrypted_tablespaces e, sys.ts$ t
 WHERE  e.ts# = t.ts# 
 AND    e.encryptedts = 'YES';
+timing stop TS_TDE;
 
 set heading off;
+
 PROMPT
 PROMPT
 PROMPT *********************************************************************
-PROMPT ****	Compressed tables, partitions or subpartitions      
-PROMPT ****     If Yes, then compression is supported 
+PROMPT ****	Compressed tables, partitions or subpartitions      	****
+PROMPT ****	Supported only for Oracle 11gR2+ and SP 7.6+        	****
+PROMPT ****	If that not applies and partitioned table, then     	****
+PROMPT ****	doublecheck if partitions are actually compressed   	****
+PROMPT ****	- If yes: NOT SUPPORTED                             	****
+PROMPT ****	- If no:  Check to just change default compression  	****
+PROMPT ****	-         attribute of the table                    	****
 PROMPT *********************************************************************
+timing start compress_table;
 set heading on;
 SELECT owner, table_name,compression,compress_for, NULL AS partition_name, NULL AS subpartition_name, 
-  CASE WHEN compress_for IN ('BASIC','DIRECT LOAD ONLY') THEN 'Yes'
-       WHEN compress_for IN ('FOR ALL OPERATIONS') THEN 'Yes'
-       WHEN compress_for IN ('OLTP') THEN '11gR2, 12cR1 ONLY'
-       WHEN compress_for IN ('QUERY LOW','QUERY HIGH','ARCHIVE LOW','ARCHIVE HIGH') THEN 'See Release Notes'
+  CASE WHEN compress_for IN ('BASIC','DIRECT LOAD ONLY') THEN 'Yes (for 11gR2+ and SP7.6+)'
+       WHEN compress_for IN ('OLTP','FOR ALL OPERATIONS') THEN 'Yes (for 11gR2+ and SP7.6+)'
+       WHEN compress_for IN ('QUERY LOW','QUERY HIGH','ARCHIVE LOW','ARCHIVE HIGH') THEN 'No (Exadata HCC)'
        ELSE 'Please doublecheck! (Unknown compression type: ' || compress_for || ')'
   END AS "Supported?"
 FROM dba_tables
 WHERE compression = 'ENABLED' 
 AND   owner NOT IN &user_exclusion
-AND   owner NOT IN &user_exclusion1
-AND   owner NOT IN &user_exclusion2
-AND   owner NOT LIKE 'APEX%'
 UNION
 SELECT table_owner AS owner, table_name,compression,compress_for, partition_name, NULL AS subpartition_name, 
-  CASE WHEN compress_for IN ('BASIC','DIRECT LOAD ONLY') THEN 'Yes'
-       WHEN compress_for IN ('FOR ALL OPERATIONS') THEN 'Yes'
-       WHEN compress_for IN ('OLTP') THEN '11gR2, 12cR1 ONLY'
-       WHEN compress_for IN ('QUERY LOW','QUERY HIGH','ARCHIVE LOW','ARCHIVE HIGH') THEN 'See Release Notes'
+  CASE WHEN compress_for IN ('BASIC','DIRECT LOAD ONLY') THEN 'Yes (for 11gR2+ and SP7.6+)'
+       WHEN compress_for IN ('OLTP','FOR ALL OPERATIONS') THEN 'Yes (for 11gR2+ and SP7.6+)'
+       WHEN compress_for IN ('QUERY LOW','QUERY HIGH','ARCHIVE LOW','ARCHIVE HIGH') THEN 'No (Exadata HCC)'
        ELSE 'Please doublecheck! (Unknown compression type: ' || compress_for || ')'
   END AS "Supported?"
 FROM dba_tab_partitions
 WHERE compression = 'ENABLED' 
 AND   table_owner NOT IN &user_exclusion
-AND   table_owner NOT IN &user_exclusion1
-AND   table_owner NOT IN &user_exclusion2
-AND   table_owner NOT LIKE 'APEX%'
 UNION
 SELECT table_owner AS owner, table_name,compression,compress_for, partition_name, subpartition_name, 
-  CASE WHEN compress_for IN ('BASIC','DIRECT LOAD ONLY') THEN 'Yes'
-       WHEN compress_for IN ('FOR ALL OPERATIONS') THEN 'Yes'
-       WHEN compress_for IN ('OLTP') THEN '11gR2, 12cR1 ONLY'
-       WHEN compress_for IN ('QUERY LOW','QUERY HIGH','ARCHIVE LOW','ARCHIVE HIGH') THEN 'See Release Notes'
+  CASE WHEN compress_for IN ('BASIC','DIRECT LOAD ONLY') THEN 'Yes (for 11gR2+ and SP7.6+)'
+       WHEN compress_for IN ('OLTP','FOR ALL OPERATIONS') THEN 'Yes (for 11gR2+ and SP7.6+)'
+       WHEN compress_for IN ('QUERY LOW','QUERY HIGH','ARCHIVE LOW','ARCHIVE HIGH') THEN 'No (Exadata HCC)'
        ELSE 'Please doublecheck! (Unknown compression type: ' || compress_for || ')'
   END AS "Supported?"
 FROM dba_tab_subpartitions
 WHERE compression = 'ENABLED' 
 AND   table_owner NOT IN &user_exclusion
-AND   table_owner NOT IN &user_exclusion1
-AND   table_owner NOT IN &user_exclusion2
-AND   table_owner NOT LIKE 'APEX%'
 ORDER BY owner, table_name, partition_name, subpartition_name;
+
 
 set heading off;
 PROMPT
 PROMPT
 PROMPT *********************************************************************
-PROMPT **** 	Columns with Transparent Data Encryption		
-PROMPT ****	Supported for some datatypes  	
-PROMPT ****	Not supported for Shareplex key columns!          	
-PROMPT ****	Column on target database has to be nullable!     	
+PROMPT **** 	Columns with Transparent Data Encryption		****
+PROMPT ****	Prior to SP 7.6: NOT SUPPORTED                      	****
+PROMPT ****	Starting with SP 7.6: Supported for some datatypes  	****
+PROMPT ****	Not supported for Shareplex key columns!          	****
+PROMPT ****	Column on target database has to be nullable!     	****
 PROMPT *********************************************************************
+timing start TDE;
 set heading on;
 COLUMN owner FORMAT A20
 COLUMN table_name FORMAT A30
@@ -904,22 +727,22 @@ FROM   dba_encrypted_columns ec
        LEFT OUTER JOIN dba_constraints c ON (tc.owner = c.owner AND tc.table_name = c.table_name AND c.constraint_type = 'P') 
        LEFT OUTER JOIN dba_cons_columns cc ON (c.owner = cc.owner AND c.constraint_name = cc.constraint_name AND tc.column_name = cc.column_name)
 WHERE  ec.owner NOT IN &user_exclusion
-AND ec.owner NOT IN &user_exclusion1
-AND ec.owner NOT IN &user_exclusion2
-AND ec.owner NOT LIKE 'APEX%'
 ORDER BY SUBSTR("Datatype supported?",1,1) ASC,
          SUBSTR("Outside of Primary Key?",1,1) ASC, 
 		 nullable ASC, 
 		 owner, table_name, column_name;
 
+timing stop TDE;
 
 set heading off;		 
 PROMPT
 PROMPT
 PROMPT *********************************************************************
-PROMPT **** 	SecureFile LOBs					
-PROMPT ****	SecureFile LOBs with LOGGING and 
-PROMPT ****	without encryption, compression and dedup are supported
+PROMPT **** 	SecuredFile LOBs					****
+PROMPT ****	Prior to SP 7.6: Not supported                      	****
+PROMPT ****	SP 7.6 or higher: SecureFile LOBs with LOGGING and  	****
+PROMPT ****	without encryption, compression   			****
+PROMPT ****     and dedup are supported           			****
 PROMPT *********************************************************************
 
 COLUMN owner FORMAT A20
@@ -927,137 +750,78 @@ COLUMN table_name FORMAT A30
 COLUMN column_name FORMAT A20
 COLUMN partition_name FORMAT A20
 COLUMN subpartition_name FORMAT A20
-SELECT owner, table_name, column_name, partition_name, subpartition_name, 'SUPPORTED'  
+COLUMN "ENC,COMPR,DEDUP,LOGGING" FORMAT A25
+SELECT owner, table_name, column_name, partition_name, subpartition_name, 
+       encrypt || ',' || compression  || ',' || deduplication  || ',' || logging AS "ENC,COMPR,DEDUP,LOGGING",
+       CASE 
+	     WHEN encrypt IN ('NO','NONE') AND compression IN ('NO','NONE') AND deduplication IN ('NO','NONE') AND logging IN ('YES','NONE') THEN 'Yes (with SP7.6+)'
+		 ELSE 'No' 
+	   END AS "Supported?"
 FROM ( 
-  SELECT owner, table_name, column_name, NULL AS partition_name, NULL AS subpartition_name
+  SELECT owner, table_name, column_name, NULL AS partition_name, NULL AS subpartition_name, encrypt, compression, deduplication, logging
   FROM   dba_lobs 
   WHERE  securefile='YES'
   AND    owner NOT IN &user_exclusion
-  AND    owner NOT IN &user_exclusion1
-  AND    owner NOT IN &user_exclusion2
-  AND    owner NOT LIKE 'APEX%'
-  AND encrypt IN ('NO','NONE') AND compression IN ('NO','NONE') AND deduplication IN ('NO','NONE')
-  AND logging = 'YES'
   UNION
-  SELECT table_owner, table_name, column_name, partition_name, NULL AS subpartition_name
+  SELECT table_owner, table_name, column_name, partition_name, NULL AS subpartition_name, encrypt, compression, deduplication, logging
   FROM   dba_lob_partitions
   WHERE  securefile='YES'
   AND    table_owner NOT IN &user_exclusion
-  AND    table_owner NOT IN &user_exclusion1
-  AND    table_owner NOT IN &user_exclusion2
-  AND    table_owner NOT LIKE 'APEX%'
-  AND encrypt IN ('NO','NONE') AND compression IN ('NO','NONE') AND deduplication IN ('NO','NONE')
-  AND logging = 'YES'
   UNION
-  SELECT table_owner, table_name, column_name, lob_partition_name AS partition_name, subpartition_name
+  SELECT table_owner, table_name, column_name, lob_partition_name AS partition_name, subpartition_name, encrypt, compression, deduplication, logging
   FROM   dba_lob_subpartitions
   WHERE  securefile='YES'
-  AND    table_owner NOT IN &user_exclusion
-  AND    table_owner NOT IN &user_exclusion1
-  AND    table_owner NOT IN &user_exclusion2
-  AND    table_owner NOT LIKE 'APEX%'
-  AND encrypt IN ('NO','NONE') AND compression IN ('NO','NONE') AND deduplication IN ('NO','NONE')
-  AND logging = 'YES')
-UNION
-SELECT owner, table_name, column_name, partition_name, subpartition_name, 'NOT SUPPORTED'  
-FROM ( 
-  SELECT owner, table_name, column_name, NULL AS partition_name, NULL AS subpartition_name
-  FROM   dba_lobs 
-  WHERE  securefile='YES'
-  AND    owner NOT IN &user_exclusion
-  AND    owner NOT IN &user_exclusion1
-  AND    owner NOT IN &user_exclusion2
-  AND    owner NOT LIKE 'APEX%'
-  AND (encrypt NOT IN ('NO','NONE') OR compression NOT IN ('NO','NONE') OR deduplication NOT IN ('NO','NONE')
-  OR logging != 'YES')
-  UNION
-  SELECT table_owner, table_name, column_name, partition_name, NULL AS subpartition_name
-  FROM   dba_lob_partitions
-  WHERE  securefile='YES'
-  AND    table_owner NOT IN &user_exclusion
-  AND    table_owner NOT IN &user_exclusion1
-  AND    table_owner NOT IN &user_exclusion2
-  AND    table_owner NOT LIKE 'APEX%'
-  AND (encrypt NOT IN ('NO','NONE') OR compression NOT IN ('NO','NONE') OR deduplication NOT IN ('NO','NONE')
-  OR logging != 'YES')
-  UNION
-  SELECT table_owner, table_name, column_name, lob_partition_name AS partition_name, subpartition_name
-  FROM   dba_lob_subpartitions
-  WHERE  securefile='YES'
-  AND    table_owner NOT IN &user_exclusion
-  AND    table_owner NOT IN &user_exclusion1
-  AND    table_owner NOT IN &user_exclusion2
-  AND    table_owner NOT LIKE 'APEX%'
-  AND (encrypt NOT IN ('NO','NONE') OR compression NOT IN ('NO','NONE') OR deduplication NOT IN ('NO','NONE')
-  OR logging != 'YES'))
+  AND    table_owner NOT IN &user_exclusion)
 ORDER BY owner, table_name, column_name, partition_name, subpartition_name;
-
+timing stop 'Lobdef';
 
 set heading off;
-
+PROMPT
+PROMPT
+PROMPT
 PROMPT
 PROMPT
 prompt *********************************************************************
-prompt ****	List of Data Types that should be reviewed
-prompt ****	See release notes for additional information
-prompt ****     ALL extended data types (Oracle 12c and later)
-prompt ****     should be reviewed
+prompt **** 	NOTE 							****
+prompt ****	THE Next 2 sections should be looked at  		****
+prompt ****	Check NonBasic Datatypes for any unsopported data types ****
+prompt ****	Check if the Schema owners of of the nested objects are ****
+prompt ****	the same on source and target. 				****
 prompt *********************************************************************
+PROMPT
+PROMPT
+set heading off;
+prompt *********************************************************************
+prompt ****	List of non-basic Data Types Contained in the Database 	****
+prompt ****	Check NonBasic Datatypes for any unsopported data types ****
+prompt *********************************************************************
+timing start 'NonBasic Datatypes';
 
 set heading on;
 select a.owner, a.table_name, a.column_name,a.data_type from dba_tab_columns a, dba_objects b
-where a.data_type in ('ANYDATA','BLOB','CLOB','NCLOB','XMLTYPE', 'BINARY_FLOAT','BINARY_DOUBLE','LONG RAW','LONG') 
-and a.owner not in &user_exclusion
-AND a.owner not in &user_exclusion1
-AND a.owner not in &user_exclusion2
-AND a.owner not LIKE 'APEX%'
+where data_type not in ('VARCHAR','VARCHAR2','DATE','NUMBER','NVARCHAR2','TIMESTAMP%','LOB','BLOB','CLOB','LONG','LONG RAW','CHAR','ROWID','RAW','FLOAT','NCLOB') and
+a.owner not in &user_exclusion
 and a.table_name = b.object_name
 and b.object_type = 'TABLE'
 order by a.owner;
-
-PROMPT
-PROMPT
-prompt *********************************************************************
-prompt ****	List of Data Types that are not supported
-prompt ****	See release notes for additional information
-prompt *********************************************************************
-set heading on;
-select a.owner, a.table_name, a.column_name,a.data_type from dba_tab_columns a, dba_objects b
-where data_type not in ('ANYDATA','NCLOB','SDO_GEOMETRY','UROWID','XMLTYPE','INTERVAL','BFILE','VARCHAR','VARCHAR2','DATE','NUMBER','NVARCHAR2','LOB','BLOB','CLOB','LONG','LONG RAW','CHAR','ROWID','RAW','FLOAT','NCLOB') 
-AND data_type not like 'TIMESTAMP%'
-and data_type not like 'INTERVAL%' 
-and data_type not like 'BINARY%'
-and data_type not like 'VARRAY%'
-and data_type not like 'SDO%'
-and a.owner not in &user_exclusion
-and a.owner not in &user_exclusion1
-and a.owner not in &user_exclusion2
-and a.owner  NOT LIKE 'APEX%'
-and a.table_name = b.object_name
-and b.object_type = 'TABLE'
-order by a.owner;
+timing stop 'NonBasic Datatypes';
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****	 List of Nested Arrays                                	
-prompt ****	 For UDTs Only                                        	
-prompt ****	 Check if the Schema owners of the nested		
-prompt ****	 objects are the same on source and target.           
+prompt ****	 List of Nested Arrays                                	****
+prompt ****	 For UDTs Only                                        	****
+prompt ****	 Check if the Schema owners of of the nested		****
+prompt ****	 objects are the same on source and target.           	****
 prompt *********************************************************************
+timing start 'NestArray';
 
 Set heading on;
 select b.owner,b.attr_type_name as "Nested Array", b.type_name as "Nested In Type", b.attr_name as "Nested in Column"  
 from dba_type_attrs b 
-where b.attr_type_name in (select a.type_name from dba_types a where 
-a.owner not in &user_exclusion 
-and a.owner not in &user_exclusion1 
-and a.owner not in &user_exclusion2 
-and a.owner NOT LIKE 'APEX%'
-and typecode = 'COLLECTION')
+where b.attr_type_name in (select a.type_name from dba_types a where a.owner 
+not in &user_exclusion and typecode = 'COLLECTION')
 order by b.owner;
+timing stop 'NestArray';
 
 set heading off;
 PROMPT
@@ -1066,9 +830,10 @@ PROMPT
 PROMPT
 PROMPT
 prompt *********************************************************************
-prompt ****	NOTE 						
-prompt ****	THE REMAINING OUTPUT IS IMFORMATIONAL AND 	
-prompt ****	USED FOR IMPLEMENTATION AND PLANNING PURPOSES 		
+prompt ****	NOTE 							****
+prompt ****	THE REMAINING OUTPUT IS IMFORMATIONAL AND 		****
+prompt ****	USED FOR IMPLEMENTATION AND PLANNING PURPOSES 		****
+prompt **** 	ESMs may ignore						****
 prompt *********************************************************************
 PROMPT
 PROMPT
@@ -1077,8 +842,9 @@ PROMPT
 PROMPT
 set heading off;
 prompt *********************************************************************
-prompt ****     List of Tables with more than 254 columns      	
+prompt ****     List of Tables with more than 254 columns      		****
 prompt *********************************************************************
+timing start '254ormore';
 
 set heading on;
 column owner format a30
@@ -1086,86 +852,67 @@ column table_name format a30
 column numcols format 999G999G999
 
 select owner,table_name,count(table_name) as "NumCols" 
-from dba_tab_columns where owner not in &user_exclusion 
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
+from dba_tab_columns where owner not in &user_exclusion
 group by owner,table_name having count(table_name) > 254
 order by owner;
+timing stop '254ormore';
 
 set heading off;
+prompt *********************************************************************
+prompt ****	List of Tables that contain LONG data types        	****
+prompt *********************************************************************
+timing start 'Long Lob';
 
-PROMPT
-PROMPT
-prompt *********************************************************************
-prompt ****	List of Tables that contain LONG data types        	
-prompt *********************************************************************
 set heading on;
 column column_name format a30
 column table_name format A30
 column data_type format a30
 select owner,table_name,column_name,data_type from dba_tab_columns where data_type in ('LONG') 
 and owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
 order by owner;
+timing stop 'Long Lob';
 
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****   	Listing of Index Organized Tables      			
+prompt ****   	Listing of Index Organized Tables      			****
 prompt *********************************************************************
+timing start IOTs;
 
 set heading on;
 select owner,table_name,iot_type 
 from dba_tables 
 where iot_type = 'IOT' 
 and owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
 order by owner;
+timing stop IOTs;
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****    	Listing of Bitmap Indexes           			
+prompt ****    	Listing of Bitmap Indexes           			****
 prompt *********************************************************************
+timing start Bitmaps;
 
 set heading on;
 select owner,index_name,table_owner,table_name 
 from dba_indexes where index_type = 'BITMAP'
-and owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
 order by owner;
+timing stop Bitmaps;
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****	List of Data Types Contained in the Database 		
+prompt ****	List of Data Types Contained in the Database 		****
 prompt *********************************************************************
+timing start Datatypes;
 
 set heading on;
 select distinct data_type from dba_tab_columns 
-where owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%';
+where owner not in &user_exclusion;
+timing stop Datatypes;
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt **** 	List of Tables with size > 100 MB              		
+prompt **** 	List of Tables with size > 100 MB              		****
 prompt *********************************************************************
+timing start Largetable;
 
 set heading on;
 column MBYTE format 999G999G990
@@ -1176,20 +923,16 @@ from dba_tables t, dba_segments s
 where t.owner = s.owner
 and t.table_name = s.segment_name
 and t.owner not in &user_exclusion
-and t.owner not in &user_exclusion1
-and t.owner not in &user_exclusion2
-and t.owner NOT LIKE 'APEX%'
 and s.bytes > 100000000
 order by t.owner, t.table_name;
+timing stop Largetable;
 
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****  	list of tables not analysed for the last 30 days 	
+prompt ****  	list of tables not analysed for the last 30 days 	****
 prompt *********************************************************************
+timing start Analyzed;
 
 set heading on;
 select owner, table_name, to_char(last_analyzed,'DD-MON-RR') as "Analyzed" 
@@ -1197,18 +940,14 @@ from dba_tables
 where last_analyzed is not NULL 
 and last_analyzed < sysdate-30 
 and owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
 order by 1,2,3;
+timing stop Analyzed;
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****    	List of Tables Created in the last 60 Days  	
+prompt ****    	List of Tables Created in the last 60 Days  		****
 prompt *********************************************************************
+timing start Created;
 
 set heading on;
 col "Table_Nm" for a30;
@@ -1216,28 +955,21 @@ select owner, substr(object_name,1,30) as "Table_Nm",created
 from dba_objects where object_type = 'TABLE' 
 and created > sysdate-60 
 and owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
 order by 1,2;
 
+timing stop Created;
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt **** 	Count of triggers by Row Level and then Statement Level 
+prompt **** 	Count of triggers by Row Level and then Statement Level ****
 prompt *********************************************************************
+timing start Triggers;
 
 set heading on;
 select count(trigger_type) as "Row Level" 
 from dba_triggers 
 where trigger_type like '%ROW%' 
-and owner NOT LIKE 'APEX%'
-and owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2;
+and owner not in &user_exclusion;
 
 set heading off;
 prompt *** Statement Level ****
@@ -1246,73 +978,142 @@ select owner,trigger_name,trigger_type,table_owner,table_name
 from dba_triggers 
 where trigger_type not like '%ROW%' 
 and owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
 order by owner;
 
+timing stop Triggers;
 
 set heading off;
-
-PROMPT
-PROMPT
 prompt *********************************************************************
-prompt ****   	List Constraints with On-Delete Cascades   		
+prompt ****   	List Constraints with On-Delete Cascades   		****
 prompt *********************************************************************
+timing start OnDelCasc;
 
 set heading on;
 
 select owner,constraint_name,table_name from dba_constraints 
 where delete_rule = 'CASCADE'
 and owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
 order by owner;
+timing stop OnDelCasc;
 
 
-PROMPT
-PROMPT
+set heading off;
 prompt *********************************************************************
-prompt ****   	List Materialized Views
+prompt **** List Data Types Not Supported for Replication to   SQLServer ****
+prompt ****                       for SPX 8.6.4                          ****
 prompt *********************************************************************
-column mview_name format A30
-select owner,
-       mview_name
-from sys.dba_mviews
-where owner not in &user_exclusion
-and owner not in &user_exclusion1
-and owner not in &user_exclusion2
-and owner NOT LIKE 'APEX%'
-order by owner, mview_name;
+timing start NoRepSQLServer;
 
-PROMPT
-PROMPT
-prompt *********************************************************************
-prompt ****   	Count of CPUs (INFORMATION ONLY)
-PROMPT ****     Please contact your Account Manager licensing information
-prompt *********************************************************************
+set heading on;
 
-select stat_name,value from v$osstat where stat_name like 'NUM_CPU%';
-prompt
-prompt
+select distinct a.owner,  a.table_name, a.column_name,a.data_type from dba_tab_columns a, dba_objects b
+where ((data_type in ('ROWID','BFILE','XMLTYPE','UDT1','UNDEFINED','SDO_GEOMETRY','VARRAY')) or
+data_type like 'INTERVAL%' or
+data_type like 'BINARY%' or
+data_type like 'TIMESTAMP%LOCAL%' ) and
+a.owner not in &user_exclusion
+and a.table_name = b.object_name
+and a.OWNER=b.owner
+and b.object_type = 'TABLE'
+order by a.owner;
+
+timing stop NoRepSQLServer;
+
+set heading off;
 prompt *********************************************************************
-prompt ****     Database Parameter Settings
-prompt ****     Looking for things out of the norm
+prompt ****   	List Data Types Not Supported for Replication to SAP    ****
+prompt ****                  for SPX 8.6.4                              ****
 prompt *********************************************************************
-col Parameter for a35;
-col Setting for a50;
-select substr(name,1,35) as "Parameter", substr(value,1,50) as "Setting" from v$parameter order by name;
+timing start NoRepSAP;
+
+set heading on;
+
+select distinct a.owner,  a.table_name, a.column_name,a.data_type from dba_tab_columns a, dba_objects b
+where ((data_type in ('ROWID','BFILE','XMLTYPE','NCHAR','NVARCHAR2','UDT1','VARRAY','NCLOB','ANYDATA')) or
+data_type like 'INTERVAL%' or
+data_type like 'BINARY%' or
+data_type like 'TIMESTAMP%' ) and
+a.owner not in &user_exclusion
+and a.table_name = b.object_name
+and a.OWNER=b.owner
+and b.object_type = 'TABLE'
+order by a.owner;
+
+timing stop NoRepSAP;
+
+set heading off;
+prompt *********************************************************************
+prompt ****   	List Data Types Not Supported for Replication to Postgres    ****
+prompt ****                  for SPX 8.6.4                              ****
+prompt *********************************************************************
+timing start NoRepPostgres;
+
+set heading on;
+
+select distinct a.owner,  a.table_name, a.column_name,a.data_type from dba_tab_columns a, dba_objects b
+where ((data_type in ('ROWID','BFILE','XMLTYPE','UDT1','UNDEFINED','SDO_GEOMETRY','VARRAY','LONG RAW')) or
+data_type like 'INTERVAL%' or
+data_type like 'BINARY%' or
+data_type like 'TIMESTAMP%LOCAL%' ) and
+a.owner not in &user_exclusion
+and a.table_name = b.object_name
+and a.OWNER=b.owner
+and b.object_type = 'TABLE'
+order by a.owner;
+
+timing stop NoRepPostgres;
 
 
-PROMPT
-PROMPT
+set heading off;
 prompt *********************************************************************
-prompt ****  	&dbname..lst has been generated. 			
-prompt ****	Please send it to Quest Software   		
+prompt ****   	List Data Types Not Supported for Replication to Teradata    ****
+prompt ****                  for SPX 8.6.4                              ****
+prompt *********************************************************************
+timing start NoRepTeradata;
+
+set heading on;
+
+select distinct a.owner,  a.table_name, a.column_name,a.data_type from dba_tab_columns a, dba_objects b
+where data_type not in ('CHAR','VARCHAR','VARCHAR2','NUMBER','DATE') and a.owner not in &user_exclusion
+and a.table_name = b.object_name
+and a.OWNER=b.owner
+and b.object_type = 'TABLE'
+order by a.owner;
+
+timing stop NoRepTeradata;
+
+
+set heading off;
+prompt *********************************************************************
+prompt ****   	List Data Types Not Supported for Replication to HANA    ****
+prompt ****                  for SPX 8.6.4                              ****
+prompt *********************************************************************
+timing start NoRepHANA;
+
+set heading on;
+
+select distinct a.owner,  a.table_name, a.column_name,a.data_type from dba_tab_columns a, dba_objects b
+where data_type not in ('CHAR','VARCHAR','VARCHAR2','NUMBER','FLOAT','DATE','TIMESTAMP','LONG','LONG RAW','RAW',
+'NCHAR','NVARCHAR2','VARRAY','BLOB','CLOB','NCLOB') and a.owner not in &user_exclusion
+and a.table_name = b.object_name
+and a.OWNER=b.owner
+and b.object_type = 'TABLE'
+order by a.owner;
+
+timing stop NoRepHANA;
+
+--##########################################################################
+--##                                     END of PL/SQL routine            ##
+--##########################################################################
+set heading on;
+
+
+spool off;
+
+prompt *********************************************************************
+prompt ****  	&dbname..lst has been generated. 			****
+prompt ****	Please send it to Dell Software.   			****
 prompt *********************************************************************
 
 
 set verify on;
-
-spool off;
