@@ -21,7 +21,11 @@ su - oracle -c 'sh /vagrant/scripts/oracle_user_environment_setup.sh'
 
 sh /vagrant_scripts/configure_hostname.sh
 
-su - oracle -c 'sh /vagrant_scripts/oracle_db_software_installation_SE2.sh'
+echo "******************************************************************************"
+echo "Install Oracle." `date` 
+echo "******************************************************************************"
+#su - oracle -c 'sh /vagrant_scripts/oracle_db_software_installation.sh'
+su oracle -c 'sh /vagrant_scripts/oracle_db_software_installation.sh'
 
 echo "******************************************************************************"
 echo "Run DB root scripts." `date` 

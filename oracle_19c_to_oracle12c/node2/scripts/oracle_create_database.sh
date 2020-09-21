@@ -113,13 +113,18 @@ lsnrctl status
 echo "******************************************************************************"
 echo "Quest config." `date`
 echo "******************************************************************************"
+if [ "$ORACLE_VERSION" = "12" ]; then
+cp /vagrant_scripts/General_Purpose_Quest.dbc /u01/app/oracle/product/12.0.0/dbhome_1/assistants/dbca/templates/
+fi
+if [ "$ORACLE_VERSION" = "19" ]; then
 cp /vagrant_scripts/General_Purpose_Quest.dbc /u01/app/oracle/product/19.0.0/dbhome_1/assistants/dbca/templates/
+fi
 
 echo "******************************************************************************"
 echo "Create database." `date`
 echo "******************************************************************************"
 dbca -silent -createDatabase                                                 \
-  -templateName General_Purpose_Quest.dbc                                    \
+  -templateName General_Purpose.dbc                                          \
   -sid ${ORACLE_SID}                                                         \
   -responseFile NO_VALUE                                                     \
   -gdbname ${DB_NAME}${DB_DOMAIN_STR}                                        \

@@ -129,7 +129,7 @@ spc                      -> SharePlex console
 
 **Virtual Machine 2**
 ```
-Machine name: ol8-19-splex2
+Machine name: ol8-12-splex2
 Machine port: 2202
 
 Database name: pdb1
