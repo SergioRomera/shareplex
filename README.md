@@ -8,6 +8,7 @@ Features:
 * Replication from Oracle 12c to SQLServer
 * Replication from Oracle 12c to Kafka
 * Replication from Oracle 12c to Oracle 12c with Foglight Monitoring
+* Replication from Oracle 19c to Oracle 12c (or 12c to 19c)
 
 ## Required Software
 
