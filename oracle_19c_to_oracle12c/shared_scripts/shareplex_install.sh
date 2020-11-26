@@ -54,7 +54,8 @@ echo "**************************************************************************
 cd /vagrant_software
 license_key=`cat /vagrant_software/shareplex_licence_key.txt`
 customer_name=`cat /vagrant_software/shareplex_customer_name.txt`
-echo -e "\n\n\n\n/home/oracle\n\nsplex\nsplex\n/u01/app/quest/shareplex9.4/\n/u01/app/quest/vardir/2100/\n\n\n\n\n\n${license_key}\n${customer_name}" | ./SharePlex-9.4.0-b59-rhel-amd64-m64.tpm
+#echo -e "\n\n\n\n/home/oracle\n\nsplex\nsplex\n${SHAREPLEX_DIRINSTALL}/\n/u01/app/quest/vardir/2100/\n\n\n\n\n\n${license_key}\n${customer_name}" | ./SharePlex-9.4.0-b59-rhel-amd64-m64.tpm
+#echo -e "\n\n\n\n/home/oracle\n\nsplex\nsplex\n${SHAREPLEX_DIRINSTALL}/\n${SHAREPLEX_VARDIR}/\n\n\n\n\n\n${license_key}\n${customer_name}" | ${SHAREPLEX_SOFTWARE}
 
 echo ""
 echo "******************************************************************************"
@@ -69,8 +70,26 @@ else
   wget -q $SHAREPLEX_BINARY_DOWNLOAD
 fi
 
-# SharePlex 9.4
+cat > /vagrant_software/shareplex/splex_non_root_install.rsp <<EOF
+the SharePlex Admin group: oinstall
+product directory location: ${SHAREPLEX_DIRINSTALL}
+variable data directory location: ${SHAREPLEX_VARDIR}
+ORACLE_SID that corresponds to this installation: cdb1
+ORACLE_HOME directory that corresponds to this ORACLE_SID: ${ORACLE_HOME}
+TCP/IP port number for SharePlex communications: 2100
+
+the License key: ${license_key}
+the customer name associated with this license key: ${customer_name}
+
+Proceed with installation: yes
+Proceed with upgrade: no
+OK to upgrade: no
+valid SharePlex v. 9.2.1 license: yes
+update the license: no
+EOF
+
 echo -e "\n" | $SHAREPLEX_SOFTWARE -r /vagrant_software/shareplex/splex_non_root_install.rsp
+#echo -e "\n\n\n\n/home/oracle\n\nsplex\nsplex\n${SHAREPLEX_DIRINSTALL}/\n${SHAREPLEX_VARDIR}/\n\n\n\n\n\n${license_key}\n${customer_name}" | ${SHAREPLEX_SOFTWARE}
 
 echo ""
 echo "******************************************************************************"

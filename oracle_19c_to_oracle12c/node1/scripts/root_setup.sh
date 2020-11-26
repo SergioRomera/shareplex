@@ -52,7 +52,7 @@ echo "**************************************************************************
 su - oracle -c '. /vagrant_config/install.env && cat > ${SHAREPLEX_VARDIR}/config/my_config_oracle.cfg <<EOF
 datasource:o.pdb1
 #source tables      target tables           routing map
-expand test.%       test.%                  ol8-19-splex2@o.pdb1
+expand test.%       test.%                  ol8-12-splex2@o.pdb1
 
 EOF'
 
